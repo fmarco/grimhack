@@ -1,0 +1,3 @@
+
+class NoMovementException(Exception):
+    pass
