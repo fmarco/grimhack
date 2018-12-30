@@ -7,14 +7,12 @@ from ..items import Item, Potion
 
 
 class Wall(Base):
-
     symbol = '#'
 
 
 class Coffer(Base):
 
     symbol = 'M'
-    items = []
 
     def __init__(self, *args, **kwargs):
         self.name = kwargs.pop('name', 'Unknown Coffer')
@@ -43,12 +41,8 @@ class Coffer(Base):
 
 
 class Level(Base):
-
     x = 20
     y = 20
-    coordinates = {}
-    level_map = []
-    enemies = []
 
     action = {
         'up': ('x', -1),
@@ -58,6 +52,9 @@ class Level(Base):
     }
 
     def __init__(self, *args, **kwargs):
+        self.coordinates = {}
+        self.level_map = []
+        self.enemies = []
         self.name = kwargs.pop('name', 'Unknown level')
         self.x = kwargs.pop('x', self.x)
         self.y = kwargs.pop('y', self.y)

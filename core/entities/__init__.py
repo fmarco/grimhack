@@ -5,10 +5,6 @@ import random
 from ..base import Base
 
 class Entity(Base):
-
-    abilities = {}
-    actions = {}
-    items = []
     hp = 0
     attack = 0
     movement = 1
@@ -16,6 +12,9 @@ class Entity(Base):
     max_hp = 0
 
     def __init__(self, *args, **kwargs):
+        self.abilities = {}
+        self.actions = {}
+        self.items = []
         self.name = kwargs.pop('name', '')
 
     @property
