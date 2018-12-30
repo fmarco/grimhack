@@ -19,7 +19,7 @@ class App(object):
             action = raw_input("Type an action: ")
             try:
                 getattr(self.hero, action, None)()
-            except TypeError:
+            except TypeError, Exception:
                 print 'Not a valid command!'
                 _ = raw_input("")
             if self.hero.is_dead:

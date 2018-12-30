@@ -2,7 +2,7 @@ import json
 
 from ..base import Base
 from ..entities import Entity, Hero, Enemy, Blob
-from ..exceptions import NoMovementException
+from ..exceptions import NoMovementException, BattleFinishedException
 from ..items import Item, Potion
 
 
@@ -127,7 +127,10 @@ class Level(Base):
             if not isinstance(target, Wall):
                 if isinstance(target, Entity):
                     if isinstance(entity, Hero) or isinstance(target, Hero):
-                        self.battle(entity, target)
+                        self.fight(
+                            attacker=entity,
+                            defender=target
+                        )
                 # elif isinstance(target, Item) and isinstance(entity, Hero):
                 #     entity.items.append(target)
                 #     del self.coordinates[target]
@@ -142,21 +145,16 @@ class Level(Base):
                     self.level_map[old_x][old_y] = None
         except NoMovementException as e:
             print e
+        except BattleFinishedException as e:
+            print e
 
-    def battle(self, entity_a, entity_b):
-        turn = 0
-        end = False
-        while not end:
-            if turn == 0:
-                entity_b.hp = entity_b.hp - entity_a.attack
-                if entity_b.hp <= 0:
-                    end = True
-                turn = 1
-            else:
-                entity_a.hp = entity_a.hp - entity_b.attack
-                if entity_a.hp <= 0:
-                    end = True
-                turn = 0
+    def fight(self, attacker, defender):
+        while True:
+            defender.hp = defender.hp - attacker.attack
+            if defender.is_dead:
+                raise BattleFinishedException
+            attacker, defender = defender, attacker
+
 
     def put(self, entity, x, y):
         self.coordinates[entity] = {

@@ -18,18 +18,6 @@ class Entity(Base):
     def __init__(self, *args, **kwargs):
         self.name = kwargs.pop('name', '')
 
-    def up(self):
-        pass
-
-    def down(self):
-        pass
-
-    def right(self):
-        pass
-
-    def left(self):
-        pass
-
     @property
     def is_dead(self):
         return self.hp <= 0
