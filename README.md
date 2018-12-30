@@ -1,5 +1,5 @@
 # grimhack
-a nethack / rpg games
+a nethack / rpg games (started time ago)
 
 - currently running on python 2
 
