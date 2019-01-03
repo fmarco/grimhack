@@ -3,11 +3,12 @@ SPACE = ' '
 
 def get_entity_instance(symbol):
    from ..entities import Hero, Blob
-   from ..levels import Wall
+   from ..levels import Coffer, Wall
    tiles = {
       Wall.symbol: Wall,
       Hero.symbol: Hero,
       Blob.symbol: Blob,
+      Coffer.symbol: Coffer,
       EMPTY: None,
    }
    _class = tiles.get(symbol)
