@@ -145,6 +145,13 @@ class Level(Base):
         while True:
             defender.hp = defender.hp - attacker.attack
             if defender.is_dead:
+                if isinstance(defender, Enemy):
+                    x = self.coordinates[defender]['x']
+                    y = self.coordinates[defender]['y']
+                    self.level_map[x][y] = None
+                    del self.coordinates[defender]
+                    self.enemies.remove(defender)
+                    self.draw()
                 raise BattleFinishedException
             attacker, defender = defender, attacker
 
@@ -157,12 +164,5 @@ class Level(Base):
         self.level_map[x][y] = entity
 
     def move_enemies(self):
-        for enemy in self.enemies:
-            if enemy.is_dead:
-                x = self.coordinates[enemy]['x']
-                y = self.coordinates[enemy]['y']
-                self.level_map[x][y] = None
-                del self.coordinates[enemy]
-        self.enemies = [enemy for enemy in self.enemies if not enemy.is_dead]
         for enemy in self.enemies:
             enemy.move()
