@@ -15,7 +15,7 @@ class Entity(Base):
         self.abilities = {}
         self.actions = {}
         self.items = []
-        self.name = kwargs.pop('name', '')
+        self.name = kwargs.pop('name', 'Unknown')
 
     @property
     def is_dead(self):
@@ -57,11 +57,10 @@ class Enemy(Entity):
         super(Enemy, self).__init__(*args, **kwargs)
 
     def move(self):
-        pass
+        raise NotImplementedError
 
 
 class Blob(Enemy):
-
     symbol = 'O'
     hp = 1
     attack = 2
