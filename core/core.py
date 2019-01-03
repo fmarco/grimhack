@@ -16,16 +16,22 @@ class App(object):
 
     def game_loop(self):
         while self.running:
-            action = raw_input("Type an action: ")
-            try:
-                getattr(self.hero, action, None)()
-            except TypeError, Exception:
-                print 'Not a valid command!'
-                _ = raw_input("")
-            if self.hero.is_dead:
-                print 'You lose'
-                self.stop()
+            self.handle_user_input()
+            self.check_damages()
             self.refresh()
+
+    def handle_user_input(self):
+        action = raw_input("Type an action: ")
+        try:
+            getattr(self.hero, action, None)()
+        except TypeError, Exception:
+            print 'Not a valid command!'
+            _ = raw_input("")
+
+    def check_damages(self):
+        if self.hero.is_dead:
+            print 'You lose'
+            self.stop()
 
     def draw(self):
         self.hero.show_stats()
