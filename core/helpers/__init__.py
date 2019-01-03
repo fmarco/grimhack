@@ -1,12 +1,18 @@
-from ..entities import Hero, Enemy
-from ..levels import Wall
+EMPTY = '.'
+SPACE = ' '
 
-tiles = {
-    '#': Wall,
-    '@': Hero,
-    'X': Enemy,
-    '.': None,
-}
+def get_entity_instance(symbol):
+   from ..entities import Hero, Blob
+   from ..levels import Wall
+   tiles = {
+      Wall.symbol: Wall,
+      Hero.symbol: Hero,
+      Blob.symbol: Blob,
+      EMPTY: None,
+   }
+   _class = tiles.get(symbol)
+   return _class() if _class else None
+
 
 def getchar():
    import tty, termios, sys
