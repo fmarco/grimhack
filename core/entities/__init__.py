@@ -99,14 +99,17 @@ class Hero(Entity):
         if self.items:
             for i, item in enumerate(self.items):
                 print '{0})'.format(i), item
-            choose = raw_input('Choose one item to use')
-            try:
-                ch = int(choose)
-                item = self.items.pop(ch)
-                print 'You used one {0} !'.format(item)
-                item.use(self)
-            except ValueError:
-                pass
+            self.use_item()
         else:
             print 'Empty!'
         _ = raw_input('Press any key...')
+
+    def use_item(self):
+        choose = raw_input('Choose one item to use')
+        try:
+            ch = int(choose)
+            item = self.items.pop(ch)
+            print 'You used one {0} !'.format(item)
+            item.use(self)
+        except ValueError:
+            pass
