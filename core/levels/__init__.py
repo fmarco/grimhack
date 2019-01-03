@@ -3,6 +3,7 @@ import json
 from ..base import Base
 from ..entities import Entity, Hero, Enemy, Blob
 from ..exceptions import NoMovementException, BattleFinishedException
+from ..helpers import get_entity_instance, EMPTY, SPACE
 from ..items import Item, Potion
 
 
@@ -73,37 +74,32 @@ class Level(Base):
                 self.generate_map()
                 for i, row in enumerate(data['map']):
                     for j, column in enumerate(row):
-                        if data['map'][i][j] == '#':
-                            self.level_map[i][j] = Wall()
-                        elif data['map'][i][j] == '.':
-                            self.level_map[i][j] = None
-                        elif data['map'][i][j] == 'M':
-                            self.level_map[i][j] = Coffer()
-                        elif data['map'][i][j] == 'O':
-                            enemy = Blob()
-                            self.level_map[i][j] = enemy
-                            enemy.register(self)
-                            self.coordinates[enemy] = {
+                        symbol = data['map'][i][j]
+                        instance = get_entity_instance(symbol)
+                        self.level_map[i][j] = instance
+                        if isinstance(instance, Enemy):
+                            instance.register(self)
+                            self.coordinates[instance] = {
                                 'x': i,
                                 'y': j
                             }
                             self.enemies.append(self.level_map[i][j])
 
     def draw(self):
-        print ' '
-        print ' '
+        print SPACE
+        print SPACE
         for i, row in enumerate(self.level_map):
-            print ' ',
-            print ' ',
+            print SPACE,
+            print SPACE,
             row_list = []
             for j, column in enumerate(row):
                 if not self.level_map[i][j]:
-                    row_list.append('.')
+                    row_list.append(EMPTY)
                 else:
                     row_list.append(self.level_map[i][j].symbol)
-            print ' '.join(row_list)
-        print ' '
-        print ' '
+            print SPACE.join(row_list)
+        print SPACE
+        print SPACE
 
     def update(self, *args, **kwargs):
         entity = kwargs.pop('entity', None)
