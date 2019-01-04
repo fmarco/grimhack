@@ -77,6 +77,28 @@ class Blob(Enemy):
             getattr(self, movement, None)()
 
 
+class Zombie(Enemy):
+    symbol = 'Z'
+    hp = 3
+    attack = 1
+    max_hp = 3
+    rand_limit = 3
+
+    movements = {
+        0: 'up',
+        1: 'down',
+    }
+
+    def __init__(self, *args, **kwargs):
+        super(Zombie, self).__init__(*args, **{'name': 'Zombie'})
+
+    def move(self):
+        index = random.randint(0, self.rand_limit)
+        movement = self.movements.get(index, None)
+        if movement:
+            getattr(self, movement, None)()
+
+
 class Hero(Entity):
 
     symbol = '@'
@@ -87,6 +109,7 @@ class Hero(Entity):
     def __init__(self, *args, **kwargs):
         initial_attrs = kwargs.pop('hero_attrs', {})
         super(Hero, self).__init__(*args, **initial_attrs)
+        self.queue = []
 
     def show_stats(self):
         print '    '

@@ -59,9 +59,8 @@ class Level(Base):
         self.name = kwargs.pop('name', 'Unknown level')
         self.x = kwargs.pop('x', self.x)
         self.y = kwargs.pop('y', self.y)
-        self.generate_map()
 
-    def generate_map(self):
+    def initialize_map(self):
         self.level_map = [[None] * self.y for i in range(self.x)]
 
     def load_map(self, path=None):
@@ -71,7 +70,7 @@ class Level(Base):
                 self.name = data['name']
                 self.x = len(data['map'])
                 self.y = len(data['map'][0])
-                self.generate_map()
+                self.initialize_map()
                 for i, row in enumerate(data['map']):
                     for j, column in enumerate(row):
                         symbol = data['map'][i][j]
@@ -156,7 +155,7 @@ class Level(Base):
             attacker, defender = defender, attacker
 
 
-    def put(self, entity, x, y):
+    def add_entity_at_coordinates(self, entity, x, y):
         self.coordinates[entity] = {
             'x': x,
             'y': y,

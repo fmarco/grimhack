@@ -2,13 +2,14 @@ EMPTY = '.'
 SPACE = ' '
 
 def get_entity_instance(symbol):
-   from ..entities import Hero, Blob
+   from ..entities import Hero, Blob, Zombie
    from ..levels import Coffer, Wall
    tiles = {
       Wall.symbol: Wall,
       Hero.symbol: Hero,
       Blob.symbol: Blob,
       Coffer.symbol: Coffer,
+      Zombie.symbol: Zombie,
       EMPTY: None,
    }
    _class = tiles.get(symbol)

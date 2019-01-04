@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
+import time
 
 from entities import Hero
 from levels import Level
@@ -21,7 +22,24 @@ class App(object):
             self.refresh()
 
     def handle_user_input(self):
-        action = raw_input("Type an action: ")
+        try:
+            action = self.hero.queue.pop(0)
+            time.sleep(0.5)
+        except IndexError:
+            action = raw_input("Type an action: ")
+            if '+' in action:
+                _chain = action.split('+')
+                if len(_chain) > 1:
+                    action = _chain[0].strip()
+                    for _action in _chain[1:]:
+                        self.hero.queue.append(_action.strip())
+            elif '*' in action:
+                _chain = action.split('*')
+                if len(_chain) > 1:
+                    action = _chain[0].strip()
+                    num = int(_chain[1])
+                    for _ in range(1, num):
+                        self.hero.queue.append(action)
         try:
             getattr(self.hero, action, None)()
         except TypeError, Exception:
@@ -51,7 +69,7 @@ class App(object):
             self.levels[i].load_map('./test_level.json')
         self.level_ref = self.levels[0]
         self.hero.register(self.level_ref)
-        self.level_ref.put(self.hero, 1, 1)
+        self.level_ref.add_entity_at_coordinates(self.hero, 1, 1)
 
     def start(self, *args, **kwargs):
         init_values = {}

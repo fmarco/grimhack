@@ -22,3 +22,13 @@ class Potion(Item):
             entity.hp = entity.max_hp
         else:
             entity.hp += self.heal
+
+
+class HighPotion(Item):
+
+
+    def __init__(self, *args, **kwargs):
+        super(HighPotion, self).__init__(*args, **{'name': 'HighPotion'})
+
+    def use(self, entity):
+        entity.hp = entity.max_hp
