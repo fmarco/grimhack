@@ -43,6 +43,12 @@ class Entity(Base):
     def left(self):
         self.update_level(**{'action': ['left', self.movement]})
 
+    def fight_with(self, enemy):
+        raise NotImplementedError
+    
+    def perform_physical_attack(self, enemy):
+        raise NotImplementedError
+
 
 class Enemy(Entity):
 
@@ -58,6 +64,12 @@ class Enemy(Entity):
 
     def move(self):
         raise NotImplementedError
+
+    def fight_with(self, enemy):
+        self.perform_physical_attack(enemy)
+    
+    def perform_physical_attack(self, enemy):
+        enemy.hp = enemy.hp - self.attack
 
 
 class Blob(Enemy):
@@ -105,6 +117,10 @@ class Hero(Entity):
     hp = 10
     max_hp = 10
     attack = 5
+    battle_operations = {
+        0: 'attack',
+        1: 'magic'
+    }
 
     def __init__(self, *args, **kwargs):
         initial_attrs = kwargs.pop('hero_attrs', {})
@@ -136,3 +152,24 @@ class Hero(Entity):
             item.use(self)
         except ValueError:
             pass
+
+    def fight_with(self, enemy):
+        attacking = True
+        while attacking:
+            print '0) attack'
+            print '1) magic'
+            choose = raw_input('Choose an action')
+            try:
+                ch = int(choose)
+                choice = self.battle_operations.get(ch)
+                if choice:
+                    if choice == 'attack':
+                        self.perform_physical_attack(enemy)
+                    elif choice == 'magic':
+                        continue
+                    attacking = False
+            except ValueError:
+                pass
+    
+    def perform_physical_attack(self, enemy):
+        enemy.hp = enemy.hp - self.attack

@@ -142,15 +142,13 @@ class Level(Base):
 
     def fight(self, attacker, defender):
         while True:
-            defender.hp = defender.hp - attacker.attack
+            attacker.fight_with(defender)
             if defender.is_dead:
                 if isinstance(defender, Enemy):
-                    x = self.coordinates[defender]['x']
-                    y = self.coordinates[defender]['y']
-                    self.level_map[x][y] = None
-                    del self.coordinates[defender]
-                    self.enemies.remove(defender)
+                    self.remove_entity(defender)
                     self.draw()
+                    print 'You win !'
+                    _ = raw_input('Press any key...')
                 raise BattleFinishedException
             attacker, defender = defender, attacker
 
@@ -161,6 +159,13 @@ class Level(Base):
             'y': y,
         }
         self.level_map[x][y] = entity
+
+    def remove_entity(self, entity):
+        x = self.coordinates[entity]['x']
+        y = self.coordinates[entity]['y']
+        self.level_map[x][y] = None
+        del self.coordinates[entity]
+        self.enemies.remove(entity)
 
     def move_enemies(self):
         for enemy in self.enemies:

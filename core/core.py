@@ -48,8 +48,7 @@ class App(object):
 
     def check_damages(self):
         if self.hero.is_dead:
-            print 'You lose'
-            self.stop()
+            self.stop(message='You lose !')
 
     def draw(self):
         self.hero.show_stats()
@@ -85,3 +84,4 @@ class App(object):
         self.running = False
         if message:
             print message
+            _ = raw_input('Press any key...')
